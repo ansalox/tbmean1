@@ -5,7 +5,7 @@ const saveTask = async (req, res) => {
     return res.status(400).send({ message: "Incomplete data" });
 
   const boardSchema = new board({
-    userId: req.user.userId,
+    userId: req.user._id,
     name: req.body.name,
     description: req.body.description,
     taskStatus: "to-do",
@@ -30,7 +30,7 @@ const updateTask = async (req, res) => {
     return res.status(400).send({ message: "Incomplete data" });
 
   const taskUpdate = await board.findByIdAndUpdate(req.body._id, {
-    userId: req.body.userId,
+    userId: req.body._id,
     taskStatus: req.body.taskStatus,
   });
 
