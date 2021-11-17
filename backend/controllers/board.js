@@ -30,13 +30,12 @@ const updateTask = async (req, res) => {
     return res.status(400).send({ message: "Incomplete data" });
 
   const taskUpdate = await board.findByIdAndUpdate(req.body._id, {
-    userId: req.body._id,
     taskStatus: req.body.taskStatus,
   });
 
   return !taskUpdate
     ? res.status(400).send({ message: "Task not found" })
-    : res.status(200).send({ taskUpdate });
+    : res.status(200).send({ message: "Task updated" });
 };
 
 const deleteTask = async (req, res) => {

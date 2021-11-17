@@ -1,6 +1,8 @@
 import user from "../models/user.js";
 import role from "../models/role.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import moment from "moment";
 
 const registerUser = async (req, res) => {
   if (!req.body.name || !req.body.email || !req.body.password)
@@ -19,14 +21,27 @@ const registerUser = async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     password: passHash,
-    roleId: roleId,
+    roleId: roleId._id,
     dbStatus: true,
   });
 
   const result = await userRegister.save();
-  return !result
-    ? res.status(400).send({ message: "Failed to register user" })
-    : res.status(200).send({ result });
+
+  try {
+    return res.status(200).json({
+      token: jwt.sign(
+        {
+          _id: result._id,
+          name: result.name,
+          roleId: result.roleId,
+          iat: moment().unix(),
+        },
+        process.env.SK_JWT
+      ),
+    });
+  } catch (e) {
+    return res.status(400).send({ message: "Register error" });
+  }
 };
 
 const registerAdminUser = async (req, res) => {
@@ -94,6 +109,7 @@ const updateUser = async (req, res) => {
   const existingUser = await user.findOne({
     name: req.body.name,
     email: req.body.email,
+    password: pass,
     roleId: req.body.roleId,
   });
   if (existingUser)
@@ -130,9 +146,21 @@ const login = async (req, res) => {
   if (!hash)
     return res.status(400).send({ message: "Wrong email or password" });
 
-  return !userLogin
-    ? res.status(400).send({ message: "User no found" })
-    : res.status(200).send({ userLogin });
+  try {
+    return res.status(200).json({
+      token: jwt.sign(
+        {
+          _id: userLogin._id,
+          name: userLogin.name,
+          roleId: userLogin.roleId,
+          iat: moment().unix(),
+        },
+        process.env.SK_JWT
+      ),
+    });
+  } catch (e) {
+    return res.status(400).send({ message: "Login error" });
+  }
 };
 
 export default {
