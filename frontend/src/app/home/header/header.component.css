@@ -1,0 +1,16 @@
+.bgHeader{
+    background-color: #4d73f1;
+}
+
+ul{
+    margin: auto;
+}
+
+a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.headerSpacer{
+    flex: 1 1 auto;
+}
