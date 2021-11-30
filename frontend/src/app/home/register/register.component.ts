@@ -38,18 +38,18 @@ export class RegisterComponent implements OnInit {
       this.message = 'Failed process: Incomplete Data';
       this.openSnackBarError();
     } else {
-      this._userService.registerUser(this.registerData).subscribe(
-        (res) => {
-          localStorage.setItem('token', res.token);
+      this._userService.registerUser(this.registerData).subscribe({
+        next: (v) => {
+          localStorage.setItem('token', v.token);
           this._router.navigate(['/saveTask'])
           this.message = 'Successful user registration'
           this.openSnackBarSuccesfull();
         },
-        (err) => {
-          this.message = err.error.message;
+        error: (e) => {
+          this.message = e.error.message;
           this.openSnackBarError();
         }
-      );
+      });
     }
   }
 
