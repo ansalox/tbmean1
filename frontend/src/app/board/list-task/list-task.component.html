@@ -30,6 +30,22 @@
               </button>
             </mat-panel-title>
           </mat-expansion-panel-header>
+          <mat-panel-description>
+            {{ task.description }}
+          </mat-panel-description>
+          <mat-action-row>
+            <button class="btnSelectToDo" (click)="updateTask(task, 'to-do')" mat-button>
+              to-do
+            </button>
+            <button class="btnSelectInProgress" (click)="updateTask(task, 'in-progress')" mat-button>
+              in-progress
+            </button>
+            <button class="btnSelectDone" (click)="updateTask(task, 'done')" mat-button>
+              done
+            </button>
+            <span class="spacer"></span>
+            <mat-icon color="primary" (click)="deleteTask(task)">delete</mat-icon>
+          </mat-action-row>
         </mat-expansion-panel>
       </mat-accordion>
     </div>

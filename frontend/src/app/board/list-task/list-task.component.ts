@@ -37,9 +37,22 @@ export class ListTaskComponent implements OnInit {
     });
   }
 
-  updateTask() {}
+  updateTask(task:any, status: string) {
+    let tempStatus = task.taskStatus
+    task.taskStatus = status;
+    this._boardService.updateTask(task).subscribe({
+      next: (v) => {
+        task.taskStatus = status;
+      },
+      error: (e) => {
+        task.taskStatus = tempStatus
+        this.message = e.error.message;
+        this.openSnackBarError();
+      },
+    });
+  }
 
-  deleteTask() {}
+  deleteTask(task: any) {}
 
   openSnackBarSuccesfull() {
     this._snackBar.open(this.message, 'X', {
