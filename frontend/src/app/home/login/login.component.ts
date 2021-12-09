@@ -51,6 +51,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  
+
   openSnackBarError() {
     this._snackBar.open(this.message, 'X', {
       horizontalPosition: this.horizontalPosition,

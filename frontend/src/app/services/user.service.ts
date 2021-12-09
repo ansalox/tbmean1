@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { environment } from "../../environments/environment";
 export class UserService {
   private env: string;
 
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient, private _router: Router) {
     this.env = environment.APP_URL
    }
 
@@ -27,5 +28,11 @@ export class UserService {
    getToken(){
      return localStorage.getItem('token')
    }
+
+   logout(){
+    localStorage.removeItem('token');
+     this._router.navigate(['/login']);
+
+  }
 
 }
